@@ -1,10 +1,11 @@
-type Tab = 'reference' | 'aorists' | 'john17' | 'practice'
+type Tab = 'reference' | 'aorists' | 'john17' | 'practice' | 'survival'
 
 const tabs: { id: Tab; label: string }[] = [
   { id: 'reference', label: 'Reference' },
   { id: 'aorists', label: 'Aorists' },
   { id: 'john17', label: 'John 17' },
   { id: 'practice', label: 'Practice' },
+  { id: 'survival', label: 'Survival Rules' },
 ]
 
 export function TabNav({ active, onChange }: { active: Tab; onChange: (t: Tab) => void }) {

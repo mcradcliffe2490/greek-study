@@ -5,8 +5,9 @@ import { ReferenceTab } from './components/reference/ReferenceTab'
 import { AoristsTab } from './components/aorists/AoristsTab'
 import { John17Tab } from './components/john17/John17Tab'
 import { PracticeTab } from './components/practice/PracticeTab'
+import { SurvivalRulesTab } from './components/reference/SurvivalRulesTab'
 
-type Tab = 'reference' | 'aorists' | 'john17' | 'practice'
+type Tab = 'reference' | 'aorists' | 'john17' | 'practice' | 'survival'
 
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>('reference')
@@ -34,6 +35,7 @@ function App() {
         {activeTab === 'aorists' && <AoristsTab />}
         {activeTab === 'john17' && <John17Tab />}
         {activeTab === 'practice' && <PracticeTab />}
+        {activeTab === 'survival' && <SurvivalRulesTab />}
       </main>
 
       <SidePanel isOpen={sidePanelOpen} onClose={() => setSidePanelOpen(false)} />
