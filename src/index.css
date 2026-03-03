@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: 'Noto Serif', 'New Athena Unicode', Georgia, serif;
+    background-color: #f5f0e8;
+    color: #1a1a1a;
+  }
+  .greek {
+    font-family: 'Noto Serif', 'New Athena Unicode', 'GFS Didot', 'Palatino Linotype', Georgia, serif;
+  }
+}
