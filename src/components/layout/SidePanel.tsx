@@ -77,6 +77,14 @@ export function SidePanel({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                 <div className="greek text-stone-800">-σα, -σας, -σε(ν), -σαμεν, -σατε, -σαν</div>
               </div>
               <div>
+                <h3 className="font-semibold text-stone-600 mb-1">1st Aorist Middle</h3>
+                <div className="greek text-stone-800">-σάμην, -σω, -σατο, -σάμεθα, -σασθε, -σαντο</div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-stone-600 mb-1">2nd Aorist Middle</h3>
+                <div className="greek text-stone-800">-όμην, -οῦ, -ετο, -όμεθα, -εσθε, -οντο</div>
+              </div>
+              <div>
                 <h3 className="font-semibold text-stone-600 mb-1">Primary Mid/Pass</h3>
                 <div className="greek text-stone-800">-ομαι, -ῃ, -εται, -ομεθα, -εσθε, -ονται</div>
               </div>
