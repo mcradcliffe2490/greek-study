@@ -1,65 +1,117 @@
-import type { Verse, Token } from '../types'
+import type { Verse, Token, WordAnnotation } from '../types'
 
-// Helper to make a non-verb token
-function w(word: string): Token { return { word, isVerb: false } }
+// Helper to make a non-verb token (with optional annotation for tooltips)
+function w(word: string, annotation?: WordAnnotation): Token {
+  return annotation ? { word, isVerb: false, annotation } : { word, isVerb: false }
+}
+
+// ─── Shorthand helpers for common word patterns ──────────────────────────────
+
+/** Article */
+const art = (grammar: string, role?: string): WordAnnotation => ({
+  gloss: 'the', lexicalForm: 'ὁ, ἡ, τό', grammar: `article, ${grammar}`, role,
+})
+
+/** καί conjunction */
+const kai: WordAnnotation = { gloss: 'and; also; even', lexicalForm: 'καί', grammar: 'conjunction (coordinating)' }
+
+/** ἵνα conjunction */
+const hina: WordAnnotation = { gloss: 'in order that; so that', lexicalForm: 'ἵνα', grammar: 'conjunction (subordinating)', role: 'introduces purpose/result clause', note: 'takes subjunctive mood' }
 
 export const john17: Verse[] = [
   {
     verseNum: 1,
     rawText: 'Ταῦτα ἐλάλησεν Ἰησοῦς, καὶ ἐπάρας τοὺς ὀφθαλμοὺς αὐτοῦ εἰς τὸν οὐρανὸν εἶπεν· Πάτερ, ἐλήλυθεν ἡ ὥρα· δόξασόν σου τὸν υἱόν, ἵνα ὁ υἱὸς δοξάσῃ σέ,',
     tokens: [
-      w('Ταῦτα'),
+      w('Ταῦτα', { gloss: 'these things', lexicalForm: 'οὗτος, αὕτη, τοῦτο', grammar: 'demonstrative pronoun, acc. pl. neut.', role: 'direct object of ἐλάλησεν' }),
       { word: 'ἐλάλησεν', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'indicative', person: '3rd', number: 'singular', lexicalForm: 'λαλέω', translation: 'he spoke', note: '1st aorist; -σεν ending' } },
-      w('Ἰησοῦς,'), w('καὶ'),
+      w('Ἰησοῦς,', { gloss: 'Jesus', lexicalForm: 'Ἰησοῦς, -οῦ, ὁ', grammar: 'proper noun, nom. sg. masc.', role: 'subject of ἐλάλησεν' }),
+      w('καὶ', kai),
       { word: 'ἐπάρας', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'participle', person: 'N/A', number: 'singular', gender: 'masculine', case: 'nominative', lexicalForm: 'ἐπαίρω', translation: 'having lifted up', note: 'Aorist active participle, nom. masc. sg. — liquid aorist of ἐπαίρω; attendant circumstance' } },
-      w('τοὺς'), w('ὀφθαλμοὺς'), w('αὐτοῦ'), w('εἰς'), w('τὸν'), w('οὐρανὸν'),
+      w('τοὺς', art('acc. pl. masc.', 'with ὀφθαλμούς')),
+      w('ὀφθαλμοὺς', { gloss: 'eyes', lexicalForm: 'ὀφθαλμός, -οῦ, ὁ', grammar: 'noun, acc. pl. masc. (2nd decl.)', role: 'direct object of ἐπάρας' }),
+      w('αὐτοῦ', { gloss: 'his; of him', lexicalForm: 'αὐτός, -ή, -ό', grammar: 'personal pronoun, gen. sg. masc.', role: 'possessive genitive modifying ὀφθαλμούς' }),
+      w('εἰς', { gloss: 'into; to; toward', lexicalForm: 'εἰς', grammar: 'preposition (+ acc.)', role: 'directional, with οὐρανόν' }),
+      w('τὸν', art('acc. sg. masc.', 'with οὐρανόν')),
+      w('οὐρανὸν', { gloss: 'heaven; sky', lexicalForm: 'οὐρανός, -οῦ, ὁ', grammar: 'noun, acc. sg. masc. (2nd decl.)', role: 'object of εἰς (destination)' }),
       { word: 'εἶπεν·', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'indicative', person: '3rd', number: 'singular', lexicalForm: 'λέγω', translation: 'he said', note: '2nd aorist; suppletive stem εἰπ-; Dirty Dozen verb' } },
-      w('Πάτερ,'),
+      w('Πάτερ,', { gloss: 'Father', lexicalForm: 'πατήρ, πατρός, ὁ', grammar: 'noun, voc. sg. masc. (3rd decl.)', role: 'vocative — direct address', note: '3rd declension; irregular stem πατρ-' }),
       { word: 'ἐλήλυθεν', isVerb: true, parse: { tense: 'perfect', voice: 'active', mood: 'indicative', person: '3rd', number: 'singular', lexicalForm: 'ἔρχομαι', translation: 'has come', note: 'Perfect active; reduplication ἐλ-; Dirty Dozen verb' } },
-      w('ἡ'), w('ὥρα·'),
+      w('ἡ', art('nom. sg. fem.', 'with ὥρα')),
+      w('ὥρα·', { gloss: 'hour; appointed time', lexicalForm: 'ὥρα, -ας, ἡ', grammar: 'noun, nom. sg. fem. (1st decl.)', role: 'subject of ἐλήλυθεν' }),
       { word: 'δόξασόν', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'imperative', person: '2nd', number: 'singular', lexicalForm: 'δοξάζω', translation: 'glorify!', note: 'Aorist active imperative 2sg' } },
-      w('σου'), w('τὸν'), w('υἱόν,'), w('ἵνα'), w('ὁ'), w('υἱὸς'),
+      w('σου', { gloss: 'your; of you', lexicalForm: 'σύ', grammar: 'personal pronoun, gen. sg.', role: 'possessive genitive modifying υἱόν' }),
+      w('τὸν', art('acc. sg. masc.', 'with υἱόν')),
+      w('υἱόν,', { gloss: 'son', lexicalForm: 'υἱός, -οῦ, ὁ', grammar: 'noun, acc. sg. masc. (2nd decl.)', role: 'direct object of δόξασόν' }),
+      w('ἵνα', hina),
+      w('ὁ', art('nom. sg. masc.', 'with υἱός')),
+      w('υἱὸς', { gloss: 'son', lexicalForm: 'υἱός, -οῦ, ὁ', grammar: 'noun, nom. sg. masc. (2nd decl.)', role: 'subject of δοξάσῃ (in ἵνα clause)' }),
       { word: 'δοξάσῃ', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'subjunctive', person: '3rd', number: 'singular', lexicalForm: 'δοξάζω', translation: 'he might glorify', note: 'Aorist active subjunctive 3sg; triggered by ἵνα' } },
-      w('σέ,'),
+      w('σέ,', { gloss: 'you', lexicalForm: 'σύ', grammar: 'personal pronoun, acc. sg.', role: 'direct object of δοξάσῃ' }),
     ]
   },
   {
     verseNum: 2,
     rawText: 'καθὼς ἔδωκας αὐτῷ ἐξουσίαν πάσης σαρκός, ἵνα πᾶν ὃ δέδωκας αὐτῷ δώσῃ αὐτοῖς ζωὴν αἰώνιον.',
     tokens: [
-      w('καθὼς'),
+      w('καθὼς', { gloss: 'just as; even as', lexicalForm: 'καθώς', grammar: 'conjunction (subordinating)', role: 'introduces comparative clause' }),
       { word: 'ἔδωκας', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'indicative', person: '2nd', number: 'singular', lexicalForm: 'δίδωμι', translation: 'you gave', note: 'κ-aorist of δίδωμι (μι verb); 2sg' } },
-      w('αὐτῷ'), w('ἐξουσίαν'), w('πάσης'), w('σαρκός,'), w('ἵνα'), w('πᾶν'), w('ὃ'),
+      w('αὐτῷ', { gloss: 'to him', lexicalForm: 'αὐτός, -ή, -ό', grammar: 'personal pronoun, dat. sg. masc.', role: 'indirect object of ἔδωκας' }),
+      w('ἐξουσίαν', { gloss: 'authority; power', lexicalForm: 'ἐξουσία, -ας, ἡ', grammar: 'noun, acc. sg. fem. (1st decl.)', role: 'direct object of ἔδωκας' }),
+      w('πάσης', { gloss: 'all; every', lexicalForm: 'πᾶς, πᾶσα, πᾶν', grammar: 'adjective, gen. sg. fem. (3rd decl.)', role: 'attributive with σαρκός', note: '3rd declension; irregular stem παντ-/πασ-' }),
+      w('σαρκός,', { gloss: 'flesh; humanity', lexicalForm: 'σάρξ, σαρκός, ἡ', grammar: 'noun, gen. sg. fem. (3rd decl.)', role: 'objective genitive — authority over all flesh' }),
+      w('ἵνα', hina),
+      w('πᾶν', { gloss: 'all; every(thing)', lexicalForm: 'πᾶς, πᾶσα, πᾶν', grammar: 'adjective (substantival), acc. sg. neut.', role: 'direct object of δώσῃ', note: 'neuter substantival: "everything that"' }),
+      w('ὃ', { gloss: 'which; that', lexicalForm: 'ὅς, ἥ, ὅ', grammar: 'relative pronoun, acc. sg. neut.', role: 'introduces relative clause; object of δέδωκας' }),
       { word: 'δέδωκας', isVerb: true, parse: { tense: 'perfect', voice: 'active', mood: 'indicative', person: '2nd', number: 'singular', lexicalForm: 'δίδωμι', translation: 'you have given', note: 'Perfect active 2sg of δίδωμι; reduplication δε-' } },
-      w('αὐτῷ'),
+      w('αὐτῷ', { gloss: 'to him', lexicalForm: 'αὐτός, -ή, -ό', grammar: 'personal pronoun, dat. sg. masc.', role: 'indirect object of δέδωκας' }),
       { word: 'δώσῃ', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'subjunctive', person: '3rd', number: 'singular', lexicalForm: 'δίδωμι', translation: 'he might give', note: 'Aorist active subjunctive 3sg of δίδωμι; ἵνα clause' } },
-      w('αὐτοῖς'), w('ζωὴν'), w('αἰώνιον.'),
+      w('αὐτοῖς', { gloss: 'to them', lexicalForm: 'αὐτός, -ή, -ό', grammar: 'personal pronoun, dat. pl. masc.', role: 'indirect object of δώσῃ' }),
+      w('ζωὴν', { gloss: 'life', lexicalForm: 'ζωή, -ῆς, ἡ', grammar: 'noun, acc. sg. fem. (1st decl.)', role: 'direct object of δώσῃ' }),
+      w('αἰώνιον.', { gloss: 'eternal; everlasting', lexicalForm: 'αἰώνιος, -ον', grammar: 'adjective, acc. sg. fem. (two-termination)', role: 'attributive with ζωήν' }),
     ]
   },
   {
     verseNum: 3,
     rawText: 'αὕτη δέ ἐστιν ἡ αἰώνιος ζωή, ἵνα γινώσκωσιν σὲ τὸν μόνον ἀληθινὸν θεὸν καὶ ὃν ἀπέστειλας Ἰησοῦν Χριστόν.',
     tokens: [
-      w('αὕτη'), w('δέ'),
+      w('αὕτη', { gloss: 'this', lexicalForm: 'οὗτος, αὕτη, τοῦτο', grammar: 'demonstrative pronoun, nom. sg. fem.', role: 'subject of ἐστιν' }),
+      w('δέ', { gloss: 'but; and; now', lexicalForm: 'δέ', grammar: 'conjunction/particle (postpositive)', role: 'mild contrast or continuation', note: 'postpositive — never first word in clause' }),
       { word: 'ἐστιν', isVerb: true, parse: { tense: 'present', voice: 'active', mood: 'indicative', person: '3rd', number: 'singular', lexicalForm: 'εἰμί', translation: 'is', note: 'εἰμί present indicative 3sg' } },
-      w('ἡ'), w('αἰώνιος'), w('ζωή,'), w('ἵνα'),
+      w('ἡ', art('nom. sg. fem.', 'with ζωή')),
+      w('αἰώνιος', { gloss: 'eternal; everlasting', lexicalForm: 'αἰώνιος, -ον', grammar: 'adjective, nom. sg. fem. (two-termination)', role: 'attributive with ζωή' }),
+      w('ζωή,', { gloss: 'life', lexicalForm: 'ζωή, -ῆς, ἡ', grammar: 'noun, nom. sg. fem. (1st decl.)', role: 'predicate nominative with ἐστιν' }),
+      w('ἵνα', hina),
       { word: 'γινώσκωσιν', isVerb: true, parse: { tense: 'present', voice: 'active', mood: 'subjunctive', person: '3rd', number: 'plural', lexicalForm: 'γινώσκω', translation: 'they might know', note: 'Present active subjunctive 3pl; Dirty Dozen verb; ἵνα clause expressing content of eternal life' } },
-      w('σὲ'), w('τὸν'), w('μόνον'), w('ἀληθινὸν'), w('θεὸν'), w('καὶ'), w('ὃν'),
+      w('σὲ', { gloss: 'you', lexicalForm: 'σύ', grammar: 'personal pronoun, acc. sg.', role: 'direct object of γινώσκωσιν' }),
+      w('τὸν', art('acc. sg. masc.', 'with θεόν — in apposition to σέ')),
+      w('μόνον', { gloss: 'only; alone', lexicalForm: 'μόνος, -η, -ον', grammar: 'adjective, acc. sg. masc.', role: 'attributive with θεόν' }),
+      w('ἀληθινὸν', { gloss: 'true; genuine', lexicalForm: 'ἀληθινός, -ή, -όν', grammar: 'adjective, acc. sg. masc.', role: 'attributive with θεόν' }),
+      w('θεὸν', { gloss: 'God', lexicalForm: 'θεός, -οῦ, ὁ', grammar: 'noun, acc. sg. masc. (2nd decl.)', role: 'in apposition to σέ' }),
+      w('καὶ', kai),
+      w('ὃν', { gloss: 'whom; which', lexicalForm: 'ὅς, ἥ, ὅ', grammar: 'relative pronoun, acc. sg. masc.', role: 'direct object of ἀπέστειλας; refers to Ἰησοῦν Χριστόν' }),
       { word: 'ἀπέστειλας', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'indicative', person: '2nd', number: 'singular', lexicalForm: 'ἀποστέλλω', translation: 'you sent', note: 'LIQUID AORIST — stem ἀποστελ- (λ); vowel change ε→ει; -ας ending (no σ); augment ε→ε' } },
-      w('Ἰησοῦν'), w('Χριστόν.'),
+      w('Ἰησοῦν', { gloss: 'Jesus', lexicalForm: 'Ἰησοῦς, -οῦ, ὁ', grammar: 'proper noun, acc. sg. masc.', role: 'in apposition to ὅν — object of ἀπέστειλας' }),
+      w('Χριστόν.', { gloss: 'Christ; Anointed One', lexicalForm: 'Χριστός, -οῦ, ὁ', grammar: 'proper noun / title, acc. sg. masc. (2nd decl.)', role: 'in apposition to Ἰησοῦν' }),
     ]
   },
   {
     verseNum: 4,
     rawText: 'ἐγώ σε ἐδόξασα ἐπὶ τῆς γῆς, τὸ ἔργον τελειώσας ὃ δέδωκάς μοι ἵνα ποιήσω·',
     tokens: [
-      w('ἐγώ'), w('σε'),
+      w('ἐγώ', { gloss: 'I', lexicalForm: 'ἐγώ', grammar: 'personal pronoun, nom. sg.', role: 'emphatic subject of ἐδόξασα', note: 'explicit pronoun for emphasis (verb already encodes person)' }),
+      w('σε', { gloss: 'you', lexicalForm: 'σύ', grammar: 'personal pronoun, acc. sg.', role: 'direct object of ἐδόξασα' }),
       { word: 'ἐδόξασα', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'indicative', person: '1st', number: 'singular', lexicalForm: 'δοξάζω', translation: 'I glorified', note: '1st aorist; -σα ending; augment ε' } },
-      w('ἐπὶ'), w('τῆς'), w('γῆς,'), w('τὸ'), w('ἔργον'),
+      w('ἐπὶ', { gloss: 'upon; on', lexicalForm: 'ἐπί', grammar: 'preposition (+ gen. = upon)', role: 'locative, with τῆς γῆς', note: 'ἐπί + gen. = "on/upon"; + dat. = "at"; + acc. = "to/against"' }),
+      w('τῆς', art('gen. sg. fem.', 'with γῆς')),
+      w('γῆς,', { gloss: 'earth; land', lexicalForm: 'γῆ, γῆς, ἡ', grammar: 'noun, gen. sg. fem. (1st decl.)', role: 'object of ἐπί (location)' }),
+      w('τὸ', art('acc. sg. neut.', 'with ἔργον')),
+      w('ἔργον', { gloss: 'work; deed; task', lexicalForm: 'ἔργον, -ου, τό', grammar: 'noun, acc. sg. neut. (2nd decl.)', role: 'direct object of τελειώσας' }),
       { word: 'τελειώσας', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'participle', person: 'N/A', number: 'singular', gender: 'masculine', case: 'nominative', lexicalForm: 'τελειόω', translation: 'having completed', note: 'Aorist active participle nom. masc. sg.; adverbial (temporal/attendant circumstance)' } },
-      w('ὃ'),
+      w('ὃ', { gloss: 'which; that', lexicalForm: 'ὅς, ἥ, ὅ', grammar: 'relative pronoun, acc. sg. neut.', role: 'direct object of δέδωκάς; refers to ἔργον' }),
       { word: 'δέδωκάς', isVerb: true, parse: { tense: 'perfect', voice: 'active', mood: 'indicative', person: '2nd', number: 'singular', lexicalForm: 'δίδωμι', translation: 'you have given', note: 'Perfect active 2sg of δίδωμι (μι verb)' } },
-      w('μοι'), w('ἵνα'),
+      w('μοι', { gloss: 'to me', lexicalForm: 'ἐγώ', grammar: 'personal pronoun, dat. sg.', role: 'indirect object of δέδωκάς' }),
+      w('ἵνα', hina),
       { word: 'ποιήσω·', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'subjunctive', person: '1st', number: 'singular', lexicalForm: 'ποιέω', translation: 'I might do', note: 'Aorist active subjunctive 1sg; ἵνα clause expressing purpose' } },
     ]
   },
@@ -67,13 +119,25 @@ export const john17: Verse[] = [
     verseNum: 5,
     rawText: 'καὶ νῦν δόξασόν με σύ, πάτερ, παρὰ σεαυτῷ τῇ δόξῃ ᾗ εἶχον πρὸ τοῦ τὸν κόσμον εἶναι παρὰ σοί.',
     tokens: [
-      w('καὶ'), w('νῦν'),
+      w('καὶ', kai),
+      w('νῦν', { gloss: 'now', lexicalForm: 'νῦν', grammar: 'adverb (temporal)', role: 'modifies δόξασόν — temporal' }),
       { word: 'δόξασόν', isVerb: true, parse: { tense: 'aorist', voice: 'active', mood: 'imperative', person: '2nd', number: 'singular', lexicalForm: 'δοξάζω', translation: 'glorify!', note: 'Aorist active imperative 2sg' } },
-      w('με'), w('σύ,'), w('πάτερ,'), w('παρὰ'), w('σεαυτῷ'), w('τῇ'), w('δόξῃ'), w('ᾗ'),
+      w('με', { gloss: 'me', lexicalForm: 'ἐγώ', grammar: 'personal pronoun, acc. sg.', role: 'direct object of δόξασόν' }),
+      w('σύ,', { gloss: 'you', lexicalForm: 'σύ', grammar: 'personal pronoun, nom. sg.', role: 'emphatic subject of δόξασόν', note: 'explicit for emphasis' }),
+      w('πάτερ,', { gloss: 'Father', lexicalForm: 'πατήρ, πατρός, ὁ', grammar: 'noun, voc. sg. masc. (3rd decl.)', role: 'vocative — direct address' }),
+      w('παρὰ', { gloss: 'beside; with; from', lexicalForm: 'παρά', grammar: 'preposition (+ dat. = beside/with)', role: 'locative, with σεαυτῷ', note: 'παρά + dat. = "beside/with"; + gen. = "from"; + acc. = "alongside"' }),
+      w('σεαυτῷ', { gloss: 'yourself', lexicalForm: 'σεαυτοῦ', grammar: 'reflexive pronoun, dat. sg. masc.', role: 'object of παρά — "with yourself"' }),
+      w('τῇ', art('dat. sg. fem.', 'with δόξῃ — dative of means/manner')),
+      w('δόξῃ', { gloss: 'glory', lexicalForm: 'δόξα, -ης, ἡ', grammar: 'noun, dat. sg. fem. (1st decl.)', role: 'dative of means — "with the glory"' }),
+      w('ᾗ', { gloss: 'which', lexicalForm: 'ὅς, ἥ, ὅ', grammar: 'relative pronoun, dat. sg. fem.', role: 'refers to δόξῃ; object of εἶχον (dative by attraction)', note: 'relative pronoun attracted to dative case of antecedent δόξῃ' }),
       { word: 'εἶχον', isVerb: true, parse: { tense: 'imperfect', voice: 'active', mood: 'indicative', person: '1st', number: 'singular', lexicalForm: 'ἔχω', translation: 'I had', note: 'Imperfect active 1sg; Dirty Dozen verb; note εἶχον (irregular)' } },
-      w('πρὸ'), w('τοῦ'), w('τὸν'), w('κόσμον'),
+      w('πρὸ', { gloss: 'before', lexicalForm: 'πρό', grammar: 'preposition (+ gen.)', role: 'temporal, with τοῦ … εἶναι (articular infinitive)' }),
+      w('τοῦ', art('gen. sg. neut.', 'articular infinitive — "the being" → "before … existed"')),
+      w('τὸν', art('acc. sg. masc.', 'with κόσμον — subject of εἶναι (acc. in articular infinitive)')),
+      w('κόσμον', { gloss: 'world; universe', lexicalForm: 'κόσμος, -ου, ὁ', grammar: 'noun, acc. sg. masc. (2nd decl.)', role: 'subject of εἶναι (acc. subject of infinitive)' }),
       { word: 'εἶναι', isVerb: true, parse: { tense: 'present', voice: 'active', mood: 'infinitive', person: 'N/A', number: 'N/A', lexicalForm: 'εἰμί', translation: 'to be', note: 'πρὸ τοῦ + infinitive = "before" (temporal articular infinitive)' } },
-      w('παρὰ'), w('σοί.'),
+      w('παρὰ', { gloss: 'beside; with; from', lexicalForm: 'παρά', grammar: 'preposition (+ dat. = beside/with)', role: 'locative, with σοί' }),
+      w('σοί.', { gloss: 'you', lexicalForm: 'σύ', grammar: 'personal pronoun, dat. sg.', role: 'object of παρά — "with you"' }),
     ]
   },
   {

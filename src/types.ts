@@ -21,6 +21,15 @@ export interface VerbParse {
   case?: GCase
 }
 
+// ─── Word annotations (for tooltips) ─────────────────────────────────────────
+export interface WordAnnotation {
+  gloss: string           // English meaning: "the", "heaven", "eyes"
+  lexicalForm: string     // Dictionary headword: "ὁ, ἡ, τό", "οὐρανός, -οῦ, ὁ"
+  grammar: string         // Morphological description: "acc. pl. masc. article"
+  role?: string           // Syntactic function: "direct object", "subject"
+  note?: string           // Extra info: "crasis", "elided form", etc.
+}
+
 // ─── John 17 tokenization ─────────────────────────────────────────────────────
 export interface VerbToken {
   word: string
@@ -30,6 +39,7 @@ export interface VerbToken {
 export interface WordToken {
   word: string
   isVerb: false
+  annotation?: WordAnnotation
 }
 export type Token = VerbToken | WordToken
 
