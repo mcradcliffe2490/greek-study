@@ -1,11 +1,33 @@
-import { participleFormations, participleUses } from '../../data/participles'
+import { useState } from 'react'
+import { participleFormations, participleUses, participleCaseLabels, type ParticipleCase } from '../../data/participles'
+
+const caseKeys: ParticipleCase[] = ['nominative', 'genitive', 'dative', 'accusative']
 
 export function ParticipleRefCard() {
+  const [selectedCase, setSelectedCase] = useState<ParticipleCase>('nominative')
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-stone-200 p-5">
       <h3 className="text-lg font-semibold text-stone-800 mb-4">Participles</h3>
 
       <h4 className="text-sm font-semibold text-stone-600 mb-2">Formation</h4>
+
+      <div className="flex gap-1 mb-2">
+        {caseKeys.map(c => (
+          <button
+            key={c}
+            onClick={() => setSelectedCase(c)}
+            className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              selectedCase === c
+                ? 'bg-blue-600 text-white'
+                : 'bg-stone-100 text-stone-500 hover:bg-stone-200'
+            }`}
+          >
+            {participleCaseLabels[c]}
+          </button>
+        ))}
+      </div>
+
       <div className="overflow-x-auto mb-6">
         <table className="w-full text-sm border border-stone-200">
           <thead>
@@ -20,25 +42,28 @@ export function ParticipleRefCard() {
             </tr>
           </thead>
           <tbody>
-            {participleFormations.map((f, i) => (
-              <>
-                <tr key={`${i}-sg`} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50'}>
-                  <td className="px-2 py-1 text-stone-600 text-xs" rowSpan={2}>{f.tense} {f.voice}</td>
-                  <td className="px-2 py-0.5 text-stone-400 text-[10px]">sg</td>
-                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.masculine}</td>
-                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.feminine}</td>
-                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.neuter}</td>
-                  <td className="px-2 py-1 text-stone-500 text-xs" rowSpan={2}>{f.declension}</td>
-                  <td className="px-2 py-1 text-stone-400 text-xs" rowSpan={2}>{f.signal}</td>
-                </tr>
-                <tr key={`${i}-pl`} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50'}>
-                  <td className="px-2 py-0.5 text-stone-400 text-[10px]">pl</td>
-                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.mascPl}</td>
-                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.femPl}</td>
-                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.neutPl}</td>
-                </tr>
-              </>
-            ))}
+            {participleFormations.map((f, i) => {
+              const forms = f[selectedCase]
+              return (
+                <>
+                  <tr key={`${i}-sg`} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50'}>
+                    <td className="px-2 py-1 text-stone-600 text-xs" rowSpan={2}>{f.tense} {f.voice}</td>
+                    <td className="px-2 py-0.5 text-stone-400 text-[10px]">sg</td>
+                    <td className="px-2 py-0.5 greek text-xs font-medium">{forms.masculine}</td>
+                    <td className="px-2 py-0.5 greek text-xs font-medium">{forms.feminine}</td>
+                    <td className="px-2 py-0.5 greek text-xs font-medium">{forms.neuter}</td>
+                    <td className="px-2 py-1 text-stone-500 text-xs" rowSpan={2}>{f.declension}</td>
+                    <td className="px-2 py-1 text-stone-400 text-xs" rowSpan={2}>{f.signal}</td>
+                  </tr>
+                  <tr key={`${i}-pl`} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50'}>
+                    <td className="px-2 py-0.5 text-stone-400 text-[10px]">pl</td>
+                    <td className="px-2 py-0.5 greek text-xs font-medium">{forms.mascPl}</td>
+                    <td className="px-2 py-0.5 greek text-xs font-medium">{forms.femPl}</td>
+                    <td className="px-2 py-0.5 greek text-xs font-medium">{forms.neutPl}</td>
+                  </tr>
+                </>
+              )
+            })}
           </tbody>
         </table>
       </div>

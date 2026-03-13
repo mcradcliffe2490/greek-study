@@ -1,27 +1,96 @@
-export interface ParticipleFormRow {
-  tense: string
-  voice: string
+export interface ParticipleCaseForms {
   masculine: string
   feminine: string
   neuter: string
   mascPl: string
   femPl: string
   neutPl: string
-  genMasc: string
+}
+
+export type ParticipleCase = 'nominative' | 'genitive' | 'dative' | 'accusative'
+
+export interface ParticipleFormRow {
+  tense: string
+  voice: string
+  nominative: ParticipleCaseForms
+  genitive: ParticipleCaseForms
+  dative: ParticipleCaseForms
+  accusative: ParticipleCaseForms
   declension: string
   signal: string
 }
 
+export const participleCaseLabels: Record<ParticipleCase, string> = {
+  nominative: 'Nom',
+  genitive: 'Gen',
+  dative: 'Dat',
+  accusative: 'Acc',
+}
+
 export const participleFormations: ParticipleFormRow[] = [
-  { tense: 'Present', voice: 'Active', masculine: 'λύ-ων', feminine: 'λύ-ουσα', neuter: 'λύ-ον', mascPl: 'λύ-οντες', femPl: 'λύ-ουσαι', neutPl: 'λύ-οντα', genMasc: 'λύ-οντος', declension: '3-1-3', signal: '-ων/-ουσα/-ον' },
-  { tense: 'Present', voice: 'Middle/Passive', masculine: 'λυ-όμενος', feminine: 'λυ-ομένη', neuter: 'λυ-όμενον', mascPl: 'λυ-όμενοι', femPl: 'λυ-ομέναι', neutPl: 'λυ-όμενα', genMasc: 'λυ-ομένου', declension: '2-1-2', signal: '-ομενος/-η/-ον' },
-  { tense: 'Aorist (1st)', voice: 'Active', masculine: 'λύ-σας', feminine: 'λύ-σασα', neuter: 'λύ-σαν', mascPl: 'λύ-σαντες', femPl: 'λύ-σασαι', neutPl: 'λύ-σαντα', genMasc: 'λύ-σαντος', declension: '3-1-3', signal: '-σας/-σασα/-σαν (no augment!)' },
-  { tense: 'Aorist (1st)', voice: 'Middle', masculine: 'λυ-σάμενος', feminine: 'λυ-σαμένη', neuter: 'λυ-σάμενον', mascPl: 'λυ-σάμενοι', femPl: 'λυ-σαμέναι', neutPl: 'λυ-σάμενα', genMasc: 'λυ-σαμένου', declension: '2-1-2', signal: '-σάμενος/-η/-ον' },
-  { tense: 'Aorist (1st)', voice: 'Passive', masculine: 'λυ-θείς', feminine: 'λυ-θεῖσα', neuter: 'λυ-θέν', mascPl: 'λυ-θέντες', femPl: 'λυ-θεῖσαι', neutPl: 'λυ-θέντα', genMasc: 'λυ-θέντος', declension: '3-1-3', signal: '-θείς/-θεῖσα/-θέν (θ = passive!)' },
-  { tense: 'Aorist (2nd)', voice: 'Active', masculine: 'βαλ-ών', feminine: 'βαλ-οῦσα', neuter: 'βαλ-όν', mascPl: 'βαλ-όντες', femPl: 'βαλ-οῦσαι', neutPl: 'βαλ-όντα', genMasc: 'βαλ-όντος', declension: '3-1-3', signal: '-ών/-οῦσα/-όν (like pres but aor stem)' },
-  { tense: 'Aorist (2nd)', voice: 'Middle', masculine: 'γεν-όμενος', feminine: 'γεν-ομένη', neuter: 'γεν-όμενον', mascPl: 'γεν-όμενοι', femPl: 'γεν-ομέναι', neutPl: 'γεν-όμενα', genMasc: 'γεν-ομένου', declension: '2-1-2', signal: '-όμενος/-η/-ον (aor stem, like pres mid)' },
-  { tense: 'Perfect', voice: 'Active', masculine: 'λελυ-κώς', feminine: 'λελυ-κυῖα', neuter: 'λελυ-κός', mascPl: 'λελυ-κότες', femPl: 'λελυ-κυῖαι', neutPl: 'λελυ-κότα', genMasc: 'λελυ-κότος', declension: '3-1-3', signal: '-κώς/-κυῖα/-κός (reduplication + κ)' },
-  { tense: 'Perfect', voice: 'Middle/Passive', masculine: 'λελυ-μένος', feminine: 'λελυ-μένη', neuter: 'λελυ-μένον', mascPl: 'λελυ-μένοι', femPl: 'λελυ-μέναι', neutPl: 'λελυ-μένα', genMasc: 'λελυ-μένου', declension: '2-1-2', signal: '-μένος/-η/-ον (reduplication + μ)' },
+  {
+    tense: 'Present', voice: 'Active', declension: '3-1-3', signal: '-ων/-ουσα/-ον',
+    nominative: { masculine: 'λύ-ων', feminine: 'λύ-ουσα', neuter: 'λῦ-ον', mascPl: 'λύ-οντες', femPl: 'λύ-ουσαι', neutPl: 'λύ-οντα' },
+    genitive:   { masculine: 'λύ-οντος', feminine: 'λυ-ούσης', neuter: 'λύ-οντος', mascPl: 'λυ-όντων', femPl: 'λυ-ουσῶν', neutPl: 'λυ-όντων' },
+    dative:     { masculine: 'λύ-οντι', feminine: 'λυ-ούσῃ', neuter: 'λύ-οντι', mascPl: 'λύ-ουσι(ν)', femPl: 'λυ-ούσαις', neutPl: 'λύ-ουσι(ν)' },
+    accusative: { masculine: 'λύ-οντα', feminine: 'λύ-ουσαν', neuter: 'λῦ-ον', mascPl: 'λύ-οντας', femPl: 'λυ-ούσας', neutPl: 'λύ-οντα' },
+  },
+  {
+    tense: 'Present', voice: 'Middle/Passive', declension: '2-1-2', signal: '-ομενος/-η/-ον',
+    nominative: { masculine: 'λυ-όμενος', feminine: 'λυ-ομένη', neuter: 'λυ-όμενον', mascPl: 'λυ-όμενοι', femPl: 'λυ-ομέναι', neutPl: 'λυ-όμενα' },
+    genitive:   { masculine: 'λυ-ομένου', feminine: 'λυ-ομένης', neuter: 'λυ-ομένου', mascPl: 'λυ-ομένων', femPl: 'λυ-ομένων', neutPl: 'λυ-ομένων' },
+    dative:     { masculine: 'λυ-ομένῳ', feminine: 'λυ-ομένῃ', neuter: 'λυ-ομένῳ', mascPl: 'λυ-ομένοις', femPl: 'λυ-ομέναις', neutPl: 'λυ-ομένοις' },
+    accusative: { masculine: 'λυ-όμενον', feminine: 'λυ-ομένην', neuter: 'λυ-όμενον', mascPl: 'λυ-ομένους', femPl: 'λυ-ομένας', neutPl: 'λυ-όμενα' },
+  },
+  {
+    tense: 'Aorist (1st)', voice: 'Active', declension: '3-1-3', signal: '-σας/-σασα/-σαν (no augment!)',
+    nominative: { masculine: 'λύ-σας', feminine: 'λύ-σασα', neuter: 'λῦ-σαν', mascPl: 'λύ-σαντες', femPl: 'λύ-σασαι', neutPl: 'λύ-σαντα' },
+    genitive:   { masculine: 'λύ-σαντος', feminine: 'λυ-σάσης', neuter: 'λύ-σαντος', mascPl: 'λυ-σάντων', femPl: 'λυ-σασῶν', neutPl: 'λυ-σάντων' },
+    dative:     { masculine: 'λύ-σαντι', feminine: 'λυ-σάσῃ', neuter: 'λύ-σαντι', mascPl: 'λύ-σασι(ν)', femPl: 'λυ-σάσαις', neutPl: 'λύ-σασι(ν)' },
+    accusative: { masculine: 'λύ-σαντα', feminine: 'λύ-σασαν', neuter: 'λῦ-σαν', mascPl: 'λύ-σαντας', femPl: 'λυ-σάσας', neutPl: 'λύ-σαντα' },
+  },
+  {
+    tense: 'Aorist (1st)', voice: 'Middle', declension: '2-1-2', signal: '-σάμενος/-η/-ον',
+    nominative: { masculine: 'λυ-σάμενος', feminine: 'λυ-σαμένη', neuter: 'λυ-σάμενον', mascPl: 'λυ-σάμενοι', femPl: 'λυ-σαμέναι', neutPl: 'λυ-σάμενα' },
+    genitive:   { masculine: 'λυ-σαμένου', feminine: 'λυ-σαμένης', neuter: 'λυ-σαμένου', mascPl: 'λυ-σαμένων', femPl: 'λυ-σαμένων', neutPl: 'λυ-σαμένων' },
+    dative:     { masculine: 'λυ-σαμένῳ', feminine: 'λυ-σαμένῃ', neuter: 'λυ-σαμένῳ', mascPl: 'λυ-σαμένοις', femPl: 'λυ-σαμέναις', neutPl: 'λυ-σαμένοις' },
+    accusative: { masculine: 'λυ-σάμενον', feminine: 'λυ-σαμένην', neuter: 'λυ-σάμενον', mascPl: 'λυ-σαμένους', femPl: 'λυ-σαμένας', neutPl: 'λυ-σάμενα' },
+  },
+  {
+    tense: 'Aorist (1st)', voice: 'Passive', declension: '3-1-3', signal: '-θείς/-θεῖσα/-θέν (θ = passive!)',
+    nominative: { masculine: 'λυ-θείς', feminine: 'λυ-θεῖσα', neuter: 'λυ-θέν', mascPl: 'λυ-θέντες', femPl: 'λυ-θεῖσαι', neutPl: 'λυ-θέντα' },
+    genitive:   { masculine: 'λυ-θέντος', feminine: 'λυ-θείσης', neuter: 'λυ-θέντος', mascPl: 'λυ-θέντων', femPl: 'λυ-θεισῶν', neutPl: 'λυ-θέντων' },
+    dative:     { masculine: 'λυ-θέντι', feminine: 'λυ-θείσῃ', neuter: 'λυ-θέντι', mascPl: 'λυ-θεῖσι(ν)', femPl: 'λυ-θείσαις', neutPl: 'λυ-θεῖσι(ν)' },
+    accusative: { masculine: 'λυ-θέντα', feminine: 'λυ-θεῖσαν', neuter: 'λυ-θέν', mascPl: 'λυ-θέντας', femPl: 'λυ-θείσας', neutPl: 'λυ-θέντα' },
+  },
+  {
+    tense: 'Aorist (2nd)', voice: 'Active', declension: '3-1-3', signal: '-ών/-οῦσα/-όν (like pres but aor stem)',
+    nominative: { masculine: 'βαλ-ών', feminine: 'βαλ-οῦσα', neuter: 'βαλ-όν', mascPl: 'βαλ-όντες', femPl: 'βαλ-οῦσαι', neutPl: 'βαλ-όντα' },
+    genitive:   { masculine: 'βαλ-όντος', feminine: 'βαλ-ούσης', neuter: 'βαλ-όντος', mascPl: 'βαλ-όντων', femPl: 'βαλ-ουσῶν', neutPl: 'βαλ-όντων' },
+    dative:     { masculine: 'βαλ-όντι', feminine: 'βαλ-ούσῃ', neuter: 'βαλ-όντι', mascPl: 'βαλ-οῦσι(ν)', femPl: 'βαλ-ούσαις', neutPl: 'βαλ-οῦσι(ν)' },
+    accusative: { masculine: 'βαλ-όντα', feminine: 'βαλ-οῦσαν', neuter: 'βαλ-όν', mascPl: 'βαλ-όντας', femPl: 'βαλ-ούσας', neutPl: 'βαλ-όντα' },
+  },
+  {
+    tense: 'Aorist (2nd)', voice: 'Middle', declension: '2-1-2', signal: '-όμενος/-η/-ον (aor stem, like pres mid)',
+    nominative: { masculine: 'γεν-όμενος', feminine: 'γεν-ομένη', neuter: 'γεν-όμενον', mascPl: 'γεν-όμενοι', femPl: 'γεν-ομέναι', neutPl: 'γεν-όμενα' },
+    genitive:   { masculine: 'γεν-ομένου', feminine: 'γεν-ομένης', neuter: 'γεν-ομένου', mascPl: 'γεν-ομένων', femPl: 'γεν-ομένων', neutPl: 'γεν-ομένων' },
+    dative:     { masculine: 'γεν-ομένῳ', feminine: 'γεν-ομένῃ', neuter: 'γεν-ομένῳ', mascPl: 'γεν-ομένοις', femPl: 'γεν-ομέναις', neutPl: 'γεν-ομένοις' },
+    accusative: { masculine: 'γεν-όμενον', feminine: 'γεν-ομένην', neuter: 'γεν-όμενον', mascPl: 'γεν-ομένους', femPl: 'γεν-ομένας', neutPl: 'γεν-όμενα' },
+  },
+  {
+    tense: 'Perfect', voice: 'Active', declension: '3-1-3', signal: '-κώς/-κυῖα/-κός (reduplication + κ)',
+    nominative: { masculine: 'λελυ-κώς', feminine: 'λελυ-κυῖα', neuter: 'λελυ-κός', mascPl: 'λελυ-κότες', femPl: 'λελυ-κυῖαι', neutPl: 'λελυ-κότα' },
+    genitive:   { masculine: 'λελυ-κότος', feminine: 'λελυ-κυίας', neuter: 'λελυ-κότος', mascPl: 'λελυ-κότων', femPl: 'λελυ-κυιῶν', neutPl: 'λελυ-κότων' },
+    dative:     { masculine: 'λελυ-κότι', feminine: 'λελυ-κυίᾳ', neuter: 'λελυ-κότι', mascPl: 'λελυ-κόσι(ν)', femPl: 'λελυ-κυίαις', neutPl: 'λελυ-κόσι(ν)' },
+    accusative: { masculine: 'λελυ-κότα', feminine: 'λελυ-κυῖαν', neuter: 'λελυ-κός', mascPl: 'λελυ-κότας', femPl: 'λελυ-κυίας', neutPl: 'λελυ-κότα' },
+  },
+  {
+    tense: 'Perfect', voice: 'Middle/Passive', declension: '2-1-2', signal: '-μένος/-η/-ον (reduplication + μ)',
+    nominative: { masculine: 'λελυ-μένος', feminine: 'λελυ-μένη', neuter: 'λελυ-μένον', mascPl: 'λελυ-μένοι', femPl: 'λελυ-μέναι', neutPl: 'λελυ-μένα' },
+    genitive:   { masculine: 'λελυ-μένου', feminine: 'λελυ-μένης', neuter: 'λελυ-μένου', mascPl: 'λελυ-μένων', femPl: 'λελυ-μένων', neutPl: 'λελυ-μένων' },
+    dative:     { masculine: 'λελυ-μένῳ', feminine: 'λελυ-μένῃ', neuter: 'λελυ-μένῳ', mascPl: 'λελυ-μένοις', femPl: 'λελυ-μέναις', neutPl: 'λελυ-μένοις' },
+    accusative: { masculine: 'λελυ-μένον', feminine: 'λελυ-μένην', neuter: 'λελυ-μένον', mascPl: 'λελυ-μένους', femPl: 'λελυ-μένας', neutPl: 'λελυ-μένα' },
+  },
 ]
 
 export interface ParticipleUse {
