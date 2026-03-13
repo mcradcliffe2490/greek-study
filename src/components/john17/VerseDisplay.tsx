@@ -1,5 +1,6 @@
-import type { Verse, VerbToken } from '../../types'
+import type { Verse, VerbToken, WordToken } from '../../types'
 import { VerbTokenDisplay } from './VerbTokenDisplay'
+import { WordTokenDisplay } from './WordTokenDisplay'
 
 interface Props {
   verse: Verse
@@ -25,7 +26,7 @@ export function VerseDisplay({ verse, getWordStatus, onVerbClick }: Props) {
               </span>
             )
           }
-          return <span key={i} className="text-stone-700">{token.word} </span>
+          return <WordTokenDisplay key={i} token={token as WordToken} />
         })}
       </span>
     </div>
