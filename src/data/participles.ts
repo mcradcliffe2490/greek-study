@@ -4,21 +4,24 @@ export interface ParticipleFormRow {
   masculine: string
   feminine: string
   neuter: string
+  mascPl: string
+  femPl: string
+  neutPl: string
   genMasc: string
   declension: string
   signal: string
 }
 
 export const participleFormations: ParticipleFormRow[] = [
-  { tense: 'Present', voice: 'Active', masculine: 'λύ-ων', feminine: 'λύ-ουσα', neuter: 'λύ-ον', genMasc: 'λύ-οντος', declension: '3-1-3', signal: '-ων/-ουσα/-ον' },
-  { tense: 'Present', voice: 'Middle/Passive', masculine: 'λυ-όμενος', feminine: 'λυ-ομένη', neuter: 'λυ-όμενον', genMasc: 'λυ-ομένου', declension: '2-1-2', signal: '-ομενος/-η/-ον' },
-  { tense: 'Aorist (1st)', voice: 'Active', masculine: 'λύ-σας', feminine: 'λύ-σασα', neuter: 'λύ-σαν', genMasc: 'λύ-σαντος', declension: '3-1-3', signal: '-σας/-σασα/-σαν (no augment!)' },
-  { tense: 'Aorist (1st)', voice: 'Middle', masculine: 'λυ-σάμενος', feminine: 'λυ-σαμένη', neuter: 'λυ-σάμενον', genMasc: 'λυ-σαμένου', declension: '2-1-2', signal: '-σάμενος/-η/-ον' },
-  { tense: 'Aorist (1st)', voice: 'Passive', masculine: 'λυ-θείς', feminine: 'λυ-θεῖσα', neuter: 'λυ-θέν', genMasc: 'λυ-θέντος', declension: '3-1-3', signal: '-θείς/-θεῖσα/-θέν (θ = passive!)' },
-  { tense: 'Aorist (2nd)', voice: 'Active', masculine: 'βαλ-ών', feminine: 'βαλ-οῦσα', neuter: 'βαλ-όν', genMasc: 'βαλ-όντος', declension: '3-1-3', signal: '-ών/-οῦσα/-όν (like pres but aor stem)' },
-  { tense: 'Aorist (2nd)', voice: 'Middle', masculine: 'γεν-όμενος', feminine: 'γεν-ομένη', neuter: 'γεν-όμενον', genMasc: 'γεν-ομένου', declension: '2-1-2', signal: '-όμενος/-η/-ον (aor stem, like pres mid)' },
-  { tense: 'Perfect', voice: 'Active', masculine: 'λελυ-κώς', feminine: 'λελυ-κυῖα', neuter: 'λελυ-κός', genMasc: 'λελυ-κότος', declension: '3-1-3', signal: '-κώς/-κυῖα/-κός (reduplication + κ)' },
-  { tense: 'Perfect', voice: 'Middle/Passive', masculine: 'λελυ-μένος', feminine: 'λελυ-μένη', neuter: 'λελυ-μένον', genMasc: 'λελυ-μένου', declension: '2-1-2', signal: '-μένος/-η/-ον (reduplication + μ)' },
+  { tense: 'Present', voice: 'Active', masculine: 'λύ-ων', feminine: 'λύ-ουσα', neuter: 'λύ-ον', mascPl: 'λύ-οντες', femPl: 'λύ-ουσαι', neutPl: 'λύ-οντα', genMasc: 'λύ-οντος', declension: '3-1-3', signal: '-ων/-ουσα/-ον' },
+  { tense: 'Present', voice: 'Middle/Passive', masculine: 'λυ-όμενος', feminine: 'λυ-ομένη', neuter: 'λυ-όμενον', mascPl: 'λυ-όμενοι', femPl: 'λυ-ομέναι', neutPl: 'λυ-όμενα', genMasc: 'λυ-ομένου', declension: '2-1-2', signal: '-ομενος/-η/-ον' },
+  { tense: 'Aorist (1st)', voice: 'Active', masculine: 'λύ-σας', feminine: 'λύ-σασα', neuter: 'λύ-σαν', mascPl: 'λύ-σαντες', femPl: 'λύ-σασαι', neutPl: 'λύ-σαντα', genMasc: 'λύ-σαντος', declension: '3-1-3', signal: '-σας/-σασα/-σαν (no augment!)' },
+  { tense: 'Aorist (1st)', voice: 'Middle', masculine: 'λυ-σάμενος', feminine: 'λυ-σαμένη', neuter: 'λυ-σάμενον', mascPl: 'λυ-σάμενοι', femPl: 'λυ-σαμέναι', neutPl: 'λυ-σάμενα', genMasc: 'λυ-σαμένου', declension: '2-1-2', signal: '-σάμενος/-η/-ον' },
+  { tense: 'Aorist (1st)', voice: 'Passive', masculine: 'λυ-θείς', feminine: 'λυ-θεῖσα', neuter: 'λυ-θέν', mascPl: 'λυ-θέντες', femPl: 'λυ-θεῖσαι', neutPl: 'λυ-θέντα', genMasc: 'λυ-θέντος', declension: '3-1-3', signal: '-θείς/-θεῖσα/-θέν (θ = passive!)' },
+  { tense: 'Aorist (2nd)', voice: 'Active', masculine: 'βαλ-ών', feminine: 'βαλ-οῦσα', neuter: 'βαλ-όν', mascPl: 'βαλ-όντες', femPl: 'βαλ-οῦσαι', neutPl: 'βαλ-όντα', genMasc: 'βαλ-όντος', declension: '3-1-3', signal: '-ών/-οῦσα/-όν (like pres but aor stem)' },
+  { tense: 'Aorist (2nd)', voice: 'Middle', masculine: 'γεν-όμενος', feminine: 'γεν-ομένη', neuter: 'γεν-όμενον', mascPl: 'γεν-όμενοι', femPl: 'γεν-ομέναι', neutPl: 'γεν-όμενα', genMasc: 'γεν-ομένου', declension: '2-1-2', signal: '-όμενος/-η/-ον (aor stem, like pres mid)' },
+  { tense: 'Perfect', voice: 'Active', masculine: 'λελυ-κώς', feminine: 'λελυ-κυῖα', neuter: 'λελυ-κός', mascPl: 'λελυ-κότες', femPl: 'λελυ-κυῖαι', neutPl: 'λελυ-κότα', genMasc: 'λελυ-κότος', declension: '3-1-3', signal: '-κώς/-κυῖα/-κός (reduplication + κ)' },
+  { tense: 'Perfect', voice: 'Middle/Passive', masculine: 'λελυ-μένος', feminine: 'λελυ-μένη', neuter: 'λελυ-μένον', mascPl: 'λελυ-μένοι', femPl: 'λελυ-μέναι', neutPl: 'λελυ-μένα', genMasc: 'λελυ-μένου', declension: '2-1-2', signal: '-μένος/-η/-ον (reduplication + μ)' },
 ]
 
 export interface ParticipleUse {

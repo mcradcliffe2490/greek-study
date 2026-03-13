@@ -43,16 +43,19 @@ export function useTooltip(delay = 500) {
     if (longPressTimer.current) { clearTimeout(longPressTimer.current); longPressTimer.current = null }
   }, [])
 
-  const onPointerEnter = useCallback(() => {
+  const onPointerEnter = useCallback((e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return // touch uses tap instead
     hoverTimer.current = setTimeout(show, delay)
   }, [show, delay])
 
-  const onPointerLeave = useCallback(() => {
+  const onPointerLeave = useCallback((e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return // touch dismisses via tap-outside
     hide()
     longPressTriggered.current = false
   }, [hide])
 
-  const onPointerDown = useCallback(() => {
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return // handled by onClick for touch
     longPressTriggered.current = false
     longPressTimer.current = setTimeout(() => {
       longPressTriggered.current = true
@@ -69,8 +72,19 @@ export function useTooltip(delay = 500) {
       e.preventDefault()
       e.stopPropagation()
       longPressTriggered.current = false
+      return
     }
-  }, [])
+    // On touch devices, tap to toggle tooltip
+    if ((e.nativeEvent as PointerEvent).pointerType === 'touch' || 'ontouchstart' in window) {
+      e.preventDefault()
+      e.stopPropagation()
+      if (isVisible) {
+        hide()
+      } else {
+        show()
+      }
+    }
+  }, [isVisible, show, hide])
 
   const ref = useCallback((node: HTMLElement | null) => {
     triggerRef.current = node
