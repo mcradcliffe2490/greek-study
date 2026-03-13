@@ -11,6 +11,7 @@ export function ParticipleRefCard() {
           <thead>
             <tr className="bg-stone-100">
               <th className="px-2 py-1 text-left text-stone-500 font-medium text-xs">Tense/Voice</th>
+              <th className="px-2 py-1 text-left text-stone-500 font-medium text-xs"></th>
               <th className="px-2 py-1 text-left text-stone-500 font-medium text-xs">M</th>
               <th className="px-2 py-1 text-left text-stone-500 font-medium text-xs">F</th>
               <th className="px-2 py-1 text-left text-stone-500 font-medium text-xs">N</th>
@@ -20,14 +21,23 @@ export function ParticipleRefCard() {
           </thead>
           <tbody>
             {participleFormations.map((f, i) => (
-              <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50'}>
-                <td className="px-2 py-1 text-stone-600 text-xs">{f.tense} {f.voice}</td>
-                <td className="px-2 py-1 greek text-xs font-medium">{f.masculine}</td>
-                <td className="px-2 py-1 greek text-xs font-medium">{f.feminine}</td>
-                <td className="px-2 py-1 greek text-xs font-medium">{f.neuter}</td>
-                <td className="px-2 py-1 text-stone-500 text-xs">{f.declension}</td>
-                <td className="px-2 py-1 text-stone-400 text-xs">{f.signal}</td>
-              </tr>
+              <>
+                <tr key={`${i}-sg`} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50'}>
+                  <td className="px-2 py-1 text-stone-600 text-xs" rowSpan={2}>{f.tense} {f.voice}</td>
+                  <td className="px-2 py-0.5 text-stone-400 text-[10px]">sg</td>
+                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.masculine}</td>
+                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.feminine}</td>
+                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.neuter}</td>
+                  <td className="px-2 py-1 text-stone-500 text-xs" rowSpan={2}>{f.declension}</td>
+                  <td className="px-2 py-1 text-stone-400 text-xs" rowSpan={2}>{f.signal}</td>
+                </tr>
+                <tr key={`${i}-pl`} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50'}>
+                  <td className="px-2 py-0.5 text-stone-400 text-[10px]">pl</td>
+                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.mascPl}</td>
+                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.femPl}</td>
+                  <td className="px-2 py-0.5 greek text-xs font-medium">{f.neutPl}</td>
+                </tr>
+              </>
             ))}
           </tbody>
         </table>
